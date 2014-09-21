@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">India Votes</string>
+    <string name="action_settings">Settings</string>
+    <string name="textview_string">TextView</string>
+    <string name="signin_name">Name</string>
+    <string name="signin_age">Age</string>
+    <string name="signin_sex">Sex</string>
+    <string name="signin_sex_m">Male</string>
+    <string name="signin_sex_f">Female</string>
+    <string name="signin_topic">Topic</string>
+    <string name="signin_topic_1">Politics</string>
+    <string name="signin_topic_2">Bollywood</string>
+    <string name="signin_topic_3">Cricket</string>
+    <string name="button_send">Signin</string>
+    <string name="button_back">Submit</string>
+    <string name="title_activity_display_message">My Message :)</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="qn_p">Who do you think will become prime minister in 2014?</string>
+    <string name="qn_c">Who is the best player in Indian team currently?</string>
+    <string name="qn_b">Who is the sexiest actress in Bollywood currently?</string>
+    <string name="p1">Narendra Modi</string>
+    <string name="p2">Rahul Gandhi</string>
+    <string name="p3">Arvind Kejriwal</string>
+    <string name="p4">Sachin Tendulkar</string>
+    <string name="c1">Ravindra Jadeja</string>
+    <string name="c2">Sir Ravindra Jadeja</string>
+    <string name="c3">SRJ</string>
+    <string name="c4">Lord Ravindra Jadeja</string>
+    <string name="b1">Deepika Padukone</string>
+    <string name="b2">Katrina Kaif</string>
+    <string name="b3">Parineeti Chopra</string>
+    <string name="b4">Kareena Kapooor</string>
+
+    <string-array name="question_list">
+        <item>@string/qn_p</item>
+        <item>@string/qn_c</item>
+        <item>@string/qn_b</item>
+    </string-array>
+    <string-array name="politics_options">
+        <item>@string/p1</item>
+        <item>@string/p2</item>
+        <item>@string/p3</item>
+        <item>@string/p4</item>
+    </string-array>
+    <string-array name="cricket_options">
+        <item>@string/c1</item>
+        <item>@string/c2</item>
+        <item>@string/c3</item>
+        <item>@string/c4</item>
+    </string-array>
+    <string-array name="bollywood_options">
+        <item>@string/b1</item>
+        <item>@string/b2</item>
+        <item>@string/b3</item>
+        <item>@string/b4</item>
+    </string-array>
+
+    <string name="title_activity_final_message">The end!</string>
+
+</resources>
