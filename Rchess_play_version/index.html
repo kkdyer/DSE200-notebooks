@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<TITLE> ChessAnalyze </TITLE>
+<script type="text/javascript" language="javascript" src="support.js"></script>
+<script type="text/javascript" language="javascript" src="piece_support_attack.js"></script>
+<script type="text/javascript" language="javascript" src="piece_board.js"></script>
+<script type="text/javascript" language="javascript" src="bishop_access.js"></script>
+<script type="text/javascript" language="javascript" src="rook_access.js"></script>
+<script type="text/javascript" language="javascript" src="queen_access.js"></script>
+<script type="text/javascript" language="javascript" src="king_access.js"></script>
+<script type="text/javascript" language="javascript" src="pawn_access.js"></script>
+<script type="text/javascript" language="javascript" src="knight_access.js"></script>
+<script type="text/javascript" language="javascript" src="vertical_gradation.js"></script>
+<script type="text/javascript" language="javascript" src="radial_gradation.js"></script>
+<script type="text/javascript" language="javascript" src="sqr_gradation.js"></script>
+<script type="text/javascript" language="javascript" src="piece.js"></script>
+<script type="text/javascript" language="javascript" src="piece_strength.js"></script>
+<script type="text/javascript" language="javascript" src="http://sachinbhat.in/chess_game.js"></script>
+<script type="text/javascript" language="javascript" src="gc.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+</HEAD>
+
+<BODY BGCOLOR=#ffffff vlink=#0000ff onLoad="l()">
+<BR>
+<center>
+<BR>
+<BR>
+<table width="100%" cellpadding=0 cellspacing=0 border=0>
+<tr><td width="99%" align=center>
+<basefont size=3>
+<script type="text/javascript"><!--
+N=1;
+K=" ";
+F=px=py=0;
+temp=new Array("R1","N1","B1","Q1","K1","B2","N2","R2","P1","P2","P3","P4","P5","P6","P7","P8", ".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".",".","p1","p2","p3","p4","p5","p6","p7","p8","r1","n1","b1","q1","k1","b2","n2","r2");	// passing the original position before the start of the game
+board= new Array(8);
+board[0] = new Array (8);
+board[1] = new Array (8);
+board[2] = new Array (8);
+board[3] = new Array (8);
+board[4] = new Array (8);
+board[5] = new Array (8);
+board[6] = new Array (8);
+board[7] = new Array (8);
+obj = new Array (32);				// obj will be an array with its vallues representing the 32 pieces on the board
+for(  pp = 0 ;pp < 32; pp++)
+{
+	obj[pp] = new Object;			// Every piece of the 32 in obj, have the properties support, attack, sqr, value etc
+	obj[pp].support = "";
+	obj[pp].attack  = "";
+	obj[pp].sqr = "";
+	obj[pp].value = 0;
+	obj[pp].cal_value = 0;
+}
+piece_value_assign(obj); 			// function assigns value to pieces. Pawn = 1, Knight, Bishop = 3, Rook = 5, Queen = 9
+// radial gradation, vertical gradation and piecewise gradation/values are the 3 major parameters of the weight map 
+var grad_rad=0;		
+var grad_vert=0;
+var piece_grad=0;
+
+for ( i=0; i<8; i++ )
+for ( j=0; j<8; j++ )
+board[i][j]= temp [j*8+i];
+</script>
+<script type="text/javascript" language="javascript" src="convert.js"></script>
+<script type="text/javascript" language="javascript" src="replace.js"></script>
+<table class="frame" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td class="box">
+</td>
+</tr><tr><td class="tl">&nbsp;
+</td><td class="t">&nbsp;
+</td><td class="tr">&nbsp;
+</td></tr><tr><td class="l">&nbsp;
+</td><td class="box">
+
+<input type="checkbox" onClick="pw(this)">CPU White</input><br>
+<input type="checkbox" onClick="pb(this)">CPU Black</input>
+
+<div id="progressbar2"></div>
+
+<center><table><tr><td><img src="../Desktop/Chess/t.png"><br><script type="text/javascript">
+for(var i=0;i<8;++i)
+{
+	document.write("<img src=\"Chess/l.png\">");
+	for(var j=0;j<8;++j)
+	document.write("<span onclick=\"hu("+j+","+i+")\" id=\""+j+i+"\"><img></span>");
+	document.write("<img src=\"Chess/r.png\"><br>");
+}
+</script><img src="../Desktop/Chess/u.png"><br></td></tr></table></center>
+<div id="progressbar1" style="margin-bottom:15px;"></div>
+
+<div id="wt_map">
+<h2>Weight Map</h2>
+<table cellpadding="4px" cellspacing="4px" border="1px">
+<tbody>
+<tr>
+<td>color</td><td>radial gradation</td><td>vertical grad</td><td>piece_grad</td><td>suppport</td><td>total</td>
+</tr><tr>
+<td>white </td><td><div id="w_grad_rad"></div></td><td><div id="w_grad_vert"></div></td><td><div id="w_piece_grad"></div></td><td><div id="w_support"></div></td><td> <div id="white"></div></td>
+</tr><tr>
+<td>black </td><td><div id="b_grad_rad"></div></td><td><div id="b_grad_vert"></div></td><td><div id="b_piece_grad"></div></td><td><div id="b_support"></div></td><td> <div id="black"></div></td></tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table><tr>
+<td>
+
+Promote to <select class="Chess" name="Q">
+<option value="5">Queen</option>
+<option value="2">Knight</option>
+<option value="3">Bishop</option>
+<option value="4">Rook</option>
+</select>
+
+</td><td>
+
+<div id="i"></div>
+</td></tr>
+</table>
+
+</td><td class="r">&nbsp;
+</td></tr><tr><td class="bl">&nbsp;
+</td><td class="b">&nbsp;
+</td><td class="br">&nbsp;
+</td></tr></table>
+
+<table class="frame" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td class="tl">&nbsp;
+</td><td class="t">&nbsp;
+</td><td class="tr">&nbsp;
+</td></tr>
+
+<tr><td class="l">&nbsp;
+</td><td class="box">
+
+<h2>Game Log</h2>
+<center><table border="0" cellpadding="0" cellspacing="0" width="90%">
+<tr><td width="33%" valign="top"><div id="m0">&nbsp;
+</div></td><td width="33%" valign="top"><div id="m1">&nbsp;
+</div></td><td width="33%" valign="top"><div id="m2">&nbsp;
+</div></td></tr><tr><td width="33%" valign="top"><div id="m3">&nbsp;
+</div></td><td width="33%" valign="top"><div id="m4">&nbsp;
+</div></td><td width="33%" valign="top"><div id="m5">&nbsp;
+</div></td></tr></table></center>
+
+</td><td class="r">&nbsp;
+</td></tr><tr><td class="bl">&nbsp;
+</td><td class="b">&nbsp;
+</td><td class="br">&nbsp;
+</td></tr></table>
+<P>
+
+<td>
+</td></tr>
+</table>
+<p>
+</body></html>
